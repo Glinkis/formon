@@ -19,5 +19,5 @@ jobs:
         with:
           bun-version: latest
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: bunx jsr publish
