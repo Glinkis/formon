@@ -77,9 +77,9 @@ export function createNestedGetProps<TNested>(path: NestedPath, defaultValues: u
   const proxied = (() => {}) as RegisterInput<TNested>;
 
   return new Proxy(proxied, {
-    apply: (_, __, args) => {
+    apply: () => {
       // @ts-ignore Allow dynamic arguments.
-      return createGetProps(path, defaultValues)(...args);
+      return createGetProps(path, defaultValues);
     },
     get: (_, prop) => {
       if (typeof prop === "symbol") {
@@ -101,42 +101,40 @@ export function createNestedGetProps<TNested>(path: NestedPath, defaultValues: u
   });
 }
 
-function createGetProps(path: NestedPath, defaultValues: unknown): GetInputProps {
-  return function getProps(): InputProps {
-    const name = getNameFromPath(path);
-    const defaultValue = getMaybeSharedDefaultValue(path, defaultValues);
+function createGetProps(path: NestedPath, defaultValues: unknown): InputProps {
+  const name = getNameFromPath(path);
+  const defaultValue = getMaybeSharedDefaultValue(path, defaultValues);
 
-    if (defaultValue === NON_SHARED_VALUE) {
-      return {
-        name: name,
-        readOnly: true,
-      };
-    }
-
-    if (typeof defaultValue === "boolean") {
-      return {
-        name: name,
-        defaultChecked: defaultValue,
-      };
-    }
-
-    if (typeof defaultValue === "string") {
-      return {
-        name: name,
-        defaultValue: defaultValue,
-      };
-    }
-
-    if (typeof defaultValue === "number") {
-      return {
-        name: name,
-        defaultValue: defaultValue.toString(),
-      };
-    }
-
+  if (defaultValue === NON_SHARED_VALUE) {
     return {
       name: name,
+      readOnly: true,
     };
+  }
+
+  if (typeof defaultValue === "boolean") {
+    return {
+      name: name,
+      defaultChecked: defaultValue,
+    };
+  }
+
+  if (typeof defaultValue === "string") {
+    return {
+      name: name,
+      defaultValue: defaultValue,
+    };
+  }
+
+  if (typeof defaultValue === "number") {
+    return {
+      name: name,
+      defaultValue: defaultValue.toString(),
+    };
+  }
+
+  return {
+    name: name,
   };
 }
 
