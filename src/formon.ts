@@ -13,7 +13,6 @@ type InputProps = {
   defaultValue?: string;
   defaultChecked?: boolean;
   readOnly?: boolean;
-  className?: string;
 };
 
 type GetInputProps = () => InputProps;
