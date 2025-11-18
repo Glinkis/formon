@@ -6,13 +6,16 @@
     "url": "git+https://github.com/Glinkis/mockemon.git"
   },
   "author": "Victor Glindas <glinkis@gmail.com>",
-  "module": "index.ts",
+  "license": "MIT",
+  "main": "./dist/builder.js",
+  "module": "./dist/builder.mjs",
+  "types": "./dist/builder.d.ts",
   "type": "module",
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "import": "./index.ts",
-      "types": "./index.ts"
+      "import": "./src/formon.ts",
+      "types": "./src/formon.ts"
     }
   },
   "scripts": {
@@ -20,6 +23,9 @@
     "build": "bun run tsdown",
     "prepublishOnly": "bun run build"
   },
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
     "@types/bun": "latest",
     "prettier": "^3.6.2",
