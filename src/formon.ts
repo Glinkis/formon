@@ -78,7 +78,6 @@ export function createNestedGetProps<TNested>(path: NestedPath, defaultValues: u
 
   return new Proxy(proxied, {
     apply: () => {
-      // @ts-ignore Allow dynamic arguments.
       return createGetProps(path, defaultValues);
     },
     get: (_, prop) => {
