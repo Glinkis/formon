@@ -78,7 +78,7 @@ export function createNestedGetProps<TNested>(path: NestedPath, defaultValues: u
 
   return new Proxy(proxied, {
     apply: () => {
-      return createGetProps(path, defaultValues);
+      return getInputProps(path, defaultValues);
     },
     get: (_, prop) => {
       if (typeof prop === "symbol") {
@@ -100,7 +100,7 @@ export function createNestedGetProps<TNested>(path: NestedPath, defaultValues: u
   });
 }
 
-function createGetProps(path: NestedPath, defaultValues: unknown): InputProps {
+function getInputProps(path: NestedPath, defaultValues: unknown): InputProps {
   const name = getNameFromPath(path);
   const defaultValue = getMaybeSharedDefaultValue(path, defaultValues);
 
