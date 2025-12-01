@@ -240,3 +240,50 @@ it("throws an error if the accessed property is a symbol", () => {
 
   expect(() => form.register[symbol]()).toThrowError("Symbol properties are not supported");
 });
+
+it("can handle empty objects as default values", () => {
+  interface Shape {
+    name: string;
+    tags: string[];
+  }
+
+  const form = createFormHelper<Shape>({
+    defaultValues: {
+      name: "John",
+      tags: [],
+    },
+  });
+
+  expect(form.register.name()).toEqual({
+    name: "name",
+    defaultValue: "John",
+  });
+
+  expect(form.register.tags.at(0)()).toEqual({
+    name: "tags[0]",
+  });
+
+  expect(form.register.tags.at(1)()).toEqual({
+    name: "tags[1]",
+  });
+});
+
+it("can handle empty arrays as default values", () => {
+  interface Shape {
+    tags: string[];
+  }
+
+  const form = createFormHelper<Shape>({
+    defaultValues: {
+      tags: [],
+    },
+  });
+
+  expect(form.register.tags.at(0)()).toEqual({
+    name: "tags[0]",
+  });
+
+  expect(form.register.tags.at(1)()).toEqual({
+    name: "tags[1]",
+  });
+});
