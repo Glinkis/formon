@@ -28,7 +28,7 @@ type RegisteredNestedInput<TValue> = {
 };
 
 type RegisteredIndexedInput<TValue> = {
-  getIndex: (index: number, getIndex?: GetIndex<TValue>) => RegisterInput<TValue>;
+  at: (index: number, getIndex?: GetIndex<TValue>) => RegisterInput<TValue>;
 };
 
 /**
@@ -80,17 +80,17 @@ function createNestedGetProps<TNested>(path: NestedPath, defaultValues: unknown)
         throw new Error("Symbol properties are not supported");
       }
 
-      if (prop === "getIndex") {
+      if (prop === "at") {
         return (index: number, getIndex?: GetIndex<unknown>) => {
           if (typeof getIndex === "function") {
-            return createNestedGetProps([...path, { index, getIndex }], defaultValues);
+            return createNestedGetProps(path.concat({ index, getIndex }), defaultValues);
           }
 
-          return createNestedGetProps([...path, index], defaultValues);
+          return createNestedGetProps(path.concat(index), defaultValues);
         };
       }
 
-      return createNestedGetProps([...path, prop], defaultValues);
+      return createNestedGetProps(path.concat(prop), defaultValues);
     },
   });
 }

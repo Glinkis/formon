@@ -136,12 +136,12 @@ it("can handle a nested object shape", () => {
     defaultValue: "John",
   });
 
-  expect(form.register.user.sites.getIndex(0)()).toEqual({
+  expect(form.register.user.sites.at(0)()).toEqual({
     name: "user.sites[0]",
     defaultValue: "site1",
   });
 
-  expect(form.register.user.sites.getIndex(1)()).toEqual({
+  expect(form.register.user.sites.at(1)()).toEqual({
     name: "user.sites[1]",
     defaultValue: "site2",
   });
@@ -154,12 +154,12 @@ it("can handle a nested indexed object shape", () => {
     },
   });
 
-  expect(form.register.users.getIndex(0).name()).toEqual({
+  expect(form.register.users.at(0).name()).toEqual({
     name: "users[0].name",
     defaultValue: "John",
   });
 
-  expect(form.register.users.getIndex(1).name()).toEqual({
+  expect(form.register.users.at(1).name()).toEqual({
     name: "users[1].name",
     defaultValue: "Jane",
   });
@@ -173,12 +173,12 @@ it("can handle a nested indexed object shape with multiple default values", () =
     ],
   });
 
-  expect(form.register.users.getIndex(0).name()).toEqual({
+  expect(form.register.users.at(0).name()).toEqual({
     name: "users[0].name",
     defaultValue: "John",
   });
 
-  expect(form.register.users.getIndex(1).name()).toEqual({
+  expect(form.register.users.at(1).name()).toEqual({
     name: "users[1].name",
     readOnly: true,
   });
@@ -218,12 +218,12 @@ it("accepts a callback to get the correct default value when using an unordered 
     },
   });
 
-  expect(form.register.users.getIndex(123, ({ id }) => id).name()).toEqual({
+  expect(form.register.users.at(123, ({ id }) => id).name()).toEqual({
     name: "users[123].name",
     defaultValue: "Jane",
   });
 
-  expect(form.register.users.getIndex(456, ({ id }) => id).name()).toEqual({
+  expect(form.register.users.at(456, ({ id }) => id).name()).toEqual({
     name: "users[456].name",
     defaultValue: "Bob",
   });
