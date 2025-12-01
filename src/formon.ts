@@ -152,9 +152,11 @@ function getMaybeSharedDefaultValue(path: NestedPath, defaultValues: unknown) {
     for (const otherDefaultValue of otherDefaultValues) {
       const currentDefaultValue = getDefaultValue(path, otherDefaultValue);
 
-      if (currentDefaultValue !== firstDefaultValue) {
-        return NON_SHARED_VALUE;
+      if (currentDefaultValue === firstDefaultValue) {
+        continue;
       }
+
+      return NON_SHARED_VALUE;
     }
 
     return firstDefaultValue;
