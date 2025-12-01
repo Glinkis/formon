@@ -241,6 +241,29 @@ it("throws an error if the accessed property is a symbol", () => {
   expect(() => form.register[symbol]()).toThrowError("Symbol properties are not supported");
 });
 
+it("can handle null default values", () => {
+  interface Shape {
+    name: string;
+    bio: string;
+  }
+
+  const form = createFormHelper<Shape>({
+    defaultValues: {
+      name: "John",
+      bio: null,
+    },
+  });
+
+  expect(form.register.name()).toEqual({
+    name: "name",
+    defaultValue: "John",
+  });
+
+  expect(form.register.bio()).toEqual({
+    name: "bio",
+  });
+});
+
 it("can handle empty objects as default values", () => {
   interface Shape {
     name: string;
