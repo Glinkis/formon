@@ -20,7 +20,7 @@ type GetInputProps = () => InputProps;
 /**
  * Used to match the default value to the correct indexed field.
  */
-type GetIndex<TValue> = (defaultValue: TValue) => number;
+type GetIndex<TValue> = (defualtValue: TValue) => number;
 
 /** */
 type RegisteredNestedInput<TValue> = {
