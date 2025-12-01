@@ -175,7 +175,7 @@ it("can handle multiple default values with different tree shapes", () => {
   });
 });
 
-it("accepts a callback to get the correct defualt value when using an unordered index", () => {
+it("accepts a callback to get the correct default value when using an unordered index", () => {
   const form = createFormHelper({
     defaultValues: {
       users: [
