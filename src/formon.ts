@@ -46,11 +46,12 @@ type RegisteredIndexedInputName<TValue, TPath extends string> = RegisteredInputN
  * Infers nested input name strings from the object shape.
  * Should have the same general structure as `RegisterInput`.
  */
-type RegisteredInputName<TValue, TPath extends string> = TValue extends (infer TArrayItem)[]
-  ? RegisteredIndexedInputName<TArrayItem, TPath>
-  : Required<TValue> extends Record<infer TName extends string, infer TProp>
+type RegisteredInputName<TValue, TPath extends string> =
+  Required<TValue> extends Record<infer TName extends string, infer TProp>
     ? RegisteredInputName<TProp, TPath extends "" ? TName : `${TPath}.${TName}`>
-    : TPath;
+    : TValue extends (infer TArrayItem)[]
+      ? RegisteredIndexedInputName<TArrayItem, TPath>
+      : TPath;
 
 type NestedPath = Array<string | number | { index: number; getIndex: GetIndex<unknown> }>;
 
