@@ -1,6 +1,6 @@
 const NON_SHARED_VALUE = Symbol("NON_SHARED_VALUE");
 
-type NonOptional<TValue> = TValue extends undefined ? never : TValue;
+type Required<TValue> = TValue extends undefined ? never : TValue;
 
 type TDefaultValues<TObject> = TObject | { [TName in keyof TObject]?: TDefaultValues<TObject[TName]> | null };
 
@@ -40,23 +40,17 @@ type RegisterInput<TValue> = TValue extends (infer TArrayItem)[]
     ? RegisteredNestedInput<TValue>
     : GetInputProps;
 
-type RegisteredNestedInputName<TValue, Path extends string> = {
-  [TName in keyof TValue]: TName extends string
-    ? RegisteredInputName<TValue[TName], Path extends "" ? TName : `${Path}.${TName}`>
-    : never;
-}[keyof TValue];
-
-type RegisteredIndexedInputName<TValue, Path extends string> = RegisteredInputName<TValue, `${Path}[${string}]`>;
+type RegisteredIndexedInputName<TValue, TPath extends string> = RegisteredInputName<TValue, `${TPath}[${string}]`>;
 
 /**
  * Infers nested input name strings from the object shape.
  * Should have the same general structure as `RegisterInput`.
  */
-type RegisteredInputName<TValue, Path extends string> = TValue extends (infer TArrayItem)[]
-  ? RegisteredIndexedInputName<TArrayItem, Path>
-  : NonOptional<TValue> extends object
-    ? RegisteredNestedInputName<TValue, Path>
-    : Path;
+type RegisteredInputName<TValue, TPath extends string> = TValue extends (infer TArrayItem)[]
+  ? RegisteredIndexedInputName<TArrayItem, TPath>
+  : Required<TValue> extends Record<infer TName extends string, infer TProp>
+    ? RegisteredInputName<TProp, TPath extends "" ? TName : `${TPath}.${TName}`>
+    : TPath;
 
 type NestedPath = Array<string | number | { index: number; getIndex: GetIndex<unknown> }>;
 
@@ -73,7 +67,7 @@ export function createFormHelper<TObject>(options: FormHelperOptions<TObject> = 
   };
 }
 
-export function createNestedGetProps<TNested>(path: NestedPath, defaultValues: unknown): RegisterInput<TNested> {
+function createNestedGetProps<TNested>(path: NestedPath, defaultValues: unknown): RegisterInput<TNested> {
   const proxied = (() => {}) as RegisterInput<TNested>;
 
   return new Proxy(proxied, {

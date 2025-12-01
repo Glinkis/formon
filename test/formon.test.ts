@@ -42,6 +42,39 @@ it("can handle a flat object shape", () => {
   });
 });
 
+it("can handle a string default value", () => {
+  const form = createFormHelper<string>({
+    defaultValues: "Hello",
+  });
+
+  expect(form.register()).toEqual({
+    name: "",
+    defaultValue: "Hello",
+  });
+});
+
+it("can handle a number default value", () => {
+  const form = createFormHelper<number>({
+    defaultValues: 42,
+  });
+
+  expect(form.register()).toEqual({
+    name: "",
+    defaultValue: "42",
+  });
+});
+
+it("can handle a boolean default value", () => {
+  const form = createFormHelper<boolean>({
+    defaultValues: true,
+  });
+
+  expect(form.register()).toEqual({
+    name: "",
+    defaultChecked: true,
+  });
+});
+
 it("can handle a flat object shape with multiple default values", () => {
   interface Shape {
     id: number;
