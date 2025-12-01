@@ -96,39 +96,38 @@ function createNestedGetProps<TNested>(path: NestedPath, defaultValues: unknown)
 }
 
 function getInputProps(path: NestedPath, defaultValues: unknown): InputProps {
-  const name = getNameFromPath(path);
   const defaultValue = getMaybeSharedDefaultValue(path, defaultValues);
 
   if (defaultValue === NON_SHARED_VALUE) {
     return {
-      name: name,
+      name: getNameFromPath(path),
       readOnly: true,
     };
   }
 
   if (typeof defaultValue === "boolean") {
     return {
-      name: name,
+      name: getNameFromPath(path),
       defaultChecked: defaultValue,
     };
   }
 
   if (typeof defaultValue === "string") {
     return {
-      name: name,
+      name: getNameFromPath(path),
       defaultValue: defaultValue,
     };
   }
 
   if (typeof defaultValue === "number") {
     return {
-      name: name,
+      name: getNameFromPath(path),
       defaultValue: defaultValue.toString(),
     };
   }
 
   return {
-    name: name,
+    name: getNameFromPath(path),
   };
 }
 
