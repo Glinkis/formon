@@ -20,7 +20,6 @@ type GetInputProps = () => InputProps;
  */
 type GetIndex<TValue> = (defualtValue: TValue) => number;
 
-/** */
 type RegisteredNestedInput<TValue> = {
   [TName in keyof TValue]-?: RegisterInput<TValue[TName]>;
 };
@@ -171,9 +170,12 @@ function getDefaultValue(path: NestedPath, defaultValues: unknown) {
     }
 
     if (typeof value === "object") {
-      defaultValues = (defaultValues as unknown[]).find((defaultValue) => {
-        return value.index === value.getIndex(defaultValue);
-      });
+      if (Array.isArray(defaultValues)) {
+        defaultValues = defaultValues.find((defaultValue) => {
+          return value.index === value.getIndex(defaultValue);
+        });
+      }
+
       continue;
     }
 
